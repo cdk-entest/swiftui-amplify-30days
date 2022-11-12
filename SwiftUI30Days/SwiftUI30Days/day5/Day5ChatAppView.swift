@@ -56,6 +56,32 @@ class Day5SourceOfTruth : ObservableObject {
             print("amplify error")
         }
     }
+    
+    func subscribeMessage() async {
+        let sub = Amplify.API.subscribe(request: .subscription(of: Message.self, type: .onCreate))
+        
+        Task {
+            do {
+                for try await subEvent in sub {
+                    switch subEvent {
+                    case .connection(let subConnectionState):
+                        print("sub connection state \(subConnectionState)")
+                    case .data(let result):
+                        switch result {
+                        case .success(let createMessage):
+                            print("create message \(createMessage)")
+                            self.messages.append(createMessage)
+                            
+                        case .failure(let error):
+                            print("got failed result \(error)")
+                        }
+                    }
+                }
+            } catch {
+                print("subscription error \(error)")
+            }
+        }
+    }
 }
 
 struct Day5MessageBubble : View {
@@ -162,7 +188,8 @@ struct Day5ChatAppView: View {
             Day5CustomTextField(sot: sot)
         }
         .task {
-            await sot.listMessages()
+//            await sot.listMessages()
+            await sot.subscribeMessage()
         }
     }
 }
