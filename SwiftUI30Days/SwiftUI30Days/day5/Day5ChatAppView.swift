@@ -30,8 +30,9 @@ class Day5SourceOfTruth : ObservableObject {
     func subscribeByMyQuery() async {
         let document = """
         subscription OnCreateMessage {
-          onCreateMessage(filter: {received: {eq: false}}) {
+          onCreateMessage(filter: {user: {eq: "hai"}}) {
             id
+            user
             text
             received
             createdAt
@@ -73,6 +74,7 @@ class Day5SourceOfTruth : ObservableObject {
             listMessages {
                 items {
                   id
+                  user
                   text
                   received
                   createdAt
@@ -212,7 +214,7 @@ struct Day5RoundedCorner : Shape {
 }
 
 struct Day5CustomTextField : View {
-    
+    let user = "hai"
     @ObservedObject var sot : Day5SourceOfTruth
     @State private var message = ""
     
@@ -229,7 +231,7 @@ struct Day5CustomTextField : View {
             }
             Button {
                 Task {
-                    await sot.createMessage(message: Message(text: message, received: true, createdAt: Temporal.DateTime(Date())))
+                    await sot.createMessage(message: Message(user: user, text: message, received: true, createdAt: Temporal.DateTime(Date())))
                     message=""
                 }
             } label: {

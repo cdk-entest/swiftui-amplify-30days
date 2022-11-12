@@ -6,6 +6,7 @@ extension Message {
   // MARK: - CodingKeys 
    public enum CodingKeys: String, ModelKey {
     case id
+    case user
     case text
     case received
     case createdAt
@@ -22,6 +23,7 @@ extension Message {
     
     model.fields(
       .id(),
+      .field(message.user, is: .optional, ofType: .string),
       .field(message.text, is: .optional, ofType: .string),
       .field(message.received, is: .optional, ofType: .bool),
       .field(message.createdAt, is: .optional, isReadOnly: true, ofType: .dateTime),
