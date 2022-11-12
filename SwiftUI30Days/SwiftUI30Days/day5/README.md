@@ -13,12 +13,14 @@ date: 11/11/2022
 - Basic UI
 - Basic MVVM for the chat app
 
+Chat UI 
+
 <img width="315" alt="Screen Shot 2022-11-12 at 13 16 54" src="https://user-images.githubusercontent.com/20411077/201460642-1c289483-bbde-4623-9f4e-7d5b915f7b36.png">
 
+
+Subscribe Messages from AWS Appsync
+
 ![Screen Shot 2022-11-12 at 13 16 35](https://user-images.githubusercontent.com/20411077/201460649-359336ec-9363-41a2-a09d-8fc703bde423.png)
-
-![Screen Shot 2022-11-12 at 13 15 57](https://user-images.githubusercontent.com/20411077/201460651-4632e9ea-b108-4890-8f62-ae19f5d922e1.png)
-
 
 ## Setup Amplify for Swift IOS
 
