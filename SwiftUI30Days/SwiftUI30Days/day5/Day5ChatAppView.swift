@@ -27,6 +27,46 @@ class Day5SourceOfTruth : ObservableObject {
         self.messages.append(message)
     }
     
+    func subscribeByMyQuery() async {
+        let document = """
+        subscription OnCreateMessage {
+          onCreateMessage(filter: {received: {eq: false}}) {
+            id
+            text
+            received
+            createdAt
+          }
+        }
+        """
+        let request = GraphQLRequest<Message>(document: document, responseType: Message.self, decodePath: "onCreateMessage")
+        
+        let sub = Amplify.API.subscribe(request: request)
+        
+        Task {
+            do {
+                for try await subEvent in sub {
+                    switch subEvent {
+                    case .connection(let subConnectionState):
+                        print("sub connection state \(subConnectionState)")
+                    case .data(let result):
+                        switch result {
+                        case .success(let createMessage):
+                            print("create message \(createMessage)")
+                            Task {@MainActor in
+                                self.messages.append(createMessage)
+                            }
+                        case .failure(let error):
+                            print("got failed result \(error)")
+                        }
+                    }
+                }
+            } catch {
+                print("subscription error \(error)")
+            }
+        }
+        
+    }
+    
     func listMessagesByMyQuery() async {
         let document = """
           query ListMessages {
@@ -41,8 +81,8 @@ class Day5SourceOfTruth : ObservableObject {
               }
            }
         """
-                let request = GraphQLRequest<[Message]>(document: document, responseType: [Message].self, decodePath: "listMessages.items")
-//        let request = GraphQLRequest<JSONValue>(document: document, responseType: JSONValue.self)
+        let request = GraphQLRequest<[Message]>(document: document, responseType: [Message].self, decodePath: "listMessages.items")
+        //        let request = GraphQLRequest<JSONValue>(document: document, responseType: JSONValue.self)
         
         do {
             let result = try await Amplify.API.query(request: request)
@@ -52,16 +92,16 @@ class Day5SourceOfTruth : ObservableObject {
                     @MainActor in
                     self.messages = items
                 }
-//                print(items)
+                //                print(items)
                 
-//                if let messageJSON = items.value(at: "listMessages"),
-//                   let messagesJSON = messageJSON.value(at: "items"),
-//                   let messagesData = try? JSONEncoder().encode(messagesJSON),
-//                   let messages = try? JSONDecoder().decode([Message].self, from: messagesData) {
-//                    Task { @MainActor in
-//                        self.messages = messages
-//                    }
-//                }
+                //                if let messageJSON = items.value(at: "listMessages"),
+                //                   let messagesJSON = messageJSON.value(at: "items"),
+                //                   let messagesData = try? JSONEncoder().encode(messagesJSON),
+                //                   let messages = try? JSONDecoder().decode([Message].self, from: messagesData) {
+                //                    Task { @MainActor in
+                //                        self.messages = messages
+                //                    }
+                //                }
                 
             case .failure(let error):
                 print("error \(error)")
@@ -232,7 +272,8 @@ struct Day5ChatAppView: View {
             Day5CustomTextField(sot: sot)
         }
         .task {
-            await sot.listMessagesByMyQuery()
+            await sot.subscribeByMyQuery()
+//            await sot.listMessagesByMyQuery()
             //            await sot.listMessages()
             //            await sot.subscribeMessage()
         }
