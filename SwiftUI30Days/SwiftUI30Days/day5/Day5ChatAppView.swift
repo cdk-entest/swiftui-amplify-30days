@@ -18,13 +18,58 @@ struct Day5Message: Identifiable, Codable {
 
 class Day5SourceOfTruth : ObservableObject {
     @Published var messages = [Message]()
-   
+    
     init(){
         self.messages = []
     }
     
     func sendMessage(message: Message){
         self.messages.append(message)
+    }
+    
+    func listMessagesByMyQuery() async {
+        let document = """
+          query ListMessages {
+            listMessages {
+                items {
+                  id
+                  text
+                  received
+                  createdAt
+                  updatedAt
+                }
+              }
+           }
+        """
+                let request = GraphQLRequest<[Message]>(document: document, responseType: [Message].self, decodePath: "listMessages.items")
+//        let request = GraphQLRequest<JSONValue>(document: document, responseType: JSONValue.self)
+        
+        do {
+            let result = try await Amplify.API.query(request: request)
+            switch result {
+            case .success(let items):
+                Task {
+                    @MainActor in
+                    self.messages = items
+                }
+//                print(items)
+                
+//                if let messageJSON = items.value(at: "listMessages"),
+//                   let messagesJSON = messageJSON.value(at: "items"),
+//                   let messagesData = try? JSONEncoder().encode(messagesJSON),
+//                   let messages = try? JSONDecoder().decode([Message].self, from: messagesData) {
+//                    Task { @MainActor in
+//                        self.messages = messages
+//                    }
+//                }
+                
+            case .failure(let error):
+                print("error \(error)")
+            }
+        }
+        catch {
+            print("amplify error ")
+        }
     }
     
     func listMessages() async {
@@ -70,8 +115,9 @@ class Day5SourceOfTruth : ObservableObject {
                         switch result {
                         case .success(let createMessage):
                             print("create message \(createMessage)")
-                            self.messages.append(createMessage)
-                            
+                            Task {@MainActor in
+                                self.messages.append(createMessage)
+                            }
                         case .failure(let error):
                             print("got failed result \(error)")
                         }
@@ -126,7 +172,7 @@ struct Day5RoundedCorner : Shape {
 }
 
 struct Day5CustomTextField : View {
-   
+    
     @ObservedObject var sot : Day5SourceOfTruth
     @State private var message = ""
     
@@ -145,8 +191,6 @@ struct Day5CustomTextField : View {
                 Task {
                     await sot.createMessage(message: Message(text: message, received: true, createdAt: Temporal.DateTime(Date())))
                     message=""
-                    await sot.listMessages()
-                    
                 }
             } label: {
                 Image(systemName: "paperplane.fill")
@@ -188,8 +232,9 @@ struct Day5ChatAppView: View {
             Day5CustomTextField(sot: sot)
         }
         .task {
-//            await sot.listMessages()
-            await sot.subscribeMessage()
+            await sot.listMessagesByMyQuery()
+            //            await sot.listMessages()
+            //            await sot.subscribeMessage()
         }
     }
 }
@@ -233,10 +278,10 @@ struct Day5ChatAppView_Previews: PreviewProvider {
     @StateObject static var sot = Day5SourceOfTruth()
     
     static var previews: some View {
-//        Day5MessageBubble(message: Day5Message(text: "Hello Hai? How are you doing today? I would like to ask you a question regarding to you DA shadow next week?", received: false, timestamp: Date()))
+        //        Day5MessageBubble(message: Day5Message(text: "Hello Hai? How are you doing today? I would like to ask you a question regarding to you DA shadow next week?", received: false, timestamp: Date()))
         
         Day5ChatAppView(sot: sot)
-//        Day5CustomTextField()
+        //        Day5CustomTextField()
     }
 }
 
