@@ -1,0 +1,148 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifygraphqldemo-dev-84404-authRole",
+      "UnauthRoleArn": "arn:aws:iam::392194582387:role/amplify-amplifygraphqldemo-dev-84404-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::392194582387:role/amplify-amplifygraphqldemo-dev-84404-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifygraphqldemo-dev-84404-deployment",
+      "UnauthRoleName": "amplify-amplifygraphqldemo-dev-84404-unauthRole",
+      "StackName": "amplify-amplifygraphqldemo-dev-84404",
+      "StackId": "arn:aws:cloudformation:us-east-1:392194582387:stack/amplify-amplifygraphqldemo-dev-84404/2d0ed480-5daf-11ed-9f40-0e1437f0ca65",
+      "AmplifyAppId": "d38q1ys9oywejq"
+    }
+  },
+  "auth": {
+    "amplifygraphqldemobd7daa88": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "UserPoolId": "us-east-1_cmb8MLNPp",
+        "AppClientIDWeb": "1t4hfhmvh2mip88nj6a103j6t3",
+        "AppClientID": "7igq89v1jjaa1kb7ktb0ijldoj",
+        "IdentityPoolId": "us-east-1:ee07fe2e-556b-4742-9569-2436ef0af694",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:392194582387:userpool/us-east-1_cmb8MLNPp",
+        "IdentityPoolName": "amplifygraphqldemobd7daa88_identitypool_bd7daa88__dev",
+        "UserPoolName": "amplifygraphqldemobd7daa88_userpool_bd7daa88"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:40.873Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/auth/amplifygraphqldemobd7daa88-cloudformation-template.json",
+        "logicalId": "authamplifygraphqldemobd7daa88"
+      }
+    }
+  },
+  "api": {
+    "amplifygraphqldemo": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "vdaex6qs3jar7nrvagvqpayohm",
+        "GraphQLAPIEndpointOutput": "https://hrsqlypz5rdjjdbywch7xzaeya.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-urvqpsvi55bqjm2df6decukzy4"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:42.128Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiamplifygraphqldemo"
+      },
+      "lastPushDirHash": "ZNsM94G8kBTWbxe+zfB5VH7Uz0k="
+    }
+  },
+  "storage": {
+    "s3ca9a7ccb": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "BucketName": "amplifygraphqldemoe8eef6165e0841c1b8de37dba782484404-dev",
+        "Region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:40.881Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3ca9a7ccb"
+      }
+    }
+  },
+  "predictions": {
+    "identifyTextf86d996e": {
+      "providerPlugin": "awscloudformation",
+      "service": "RekognitionAndTextract",
+      "dependsOn": [],
+      "identifyType": "identifyText",
+      "output": {
+        "format": "ALL",
+        "region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:40.887Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/predictions/identifyTextf86d996e-template.json",
+        "logicalId": "predictionsidentifyTextf86d996e"
+      }
+    },
+    "identifyEntitiesdde7cf41": {
+      "providerPlugin": "awscloudformation",
+      "service": "Rekognition",
+      "dependsOn": [],
+      "identifyType": "identifyEntities",
+      "output": {
+        "maxEntities": "0",
+        "celebrityDetectionEnabled": "true",
+        "region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:40.889Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/predictions/identifyEntitiesdde7cf41-template.json",
+        "logicalId": "predictionsidentifyEntitiesdde7cf41"
+      }
+    },
+    "speechGeneratorc62b5c12": {
+      "providerPlugin": "awscloudformation",
+      "service": "Polly",
+      "convertType": "speechGenerator",
+      "output": {
+        "voice": "Kimberly",
+        "language": "en-US",
+        "region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2022-11-11T07:03:40.891Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifygraphqldemo-dev-84404-deployment/amplify-cfn-templates/predictions/speechGeneratorc62b5c12-template.json",
+        "logicalId": "predictionsspeechGeneratorc62b5c12"
+      }
+    }
+  }
+}
