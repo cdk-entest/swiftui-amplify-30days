@@ -156,8 +156,14 @@ class Day5SourceOfTruth : ObservableObject {
         }
     }
 }
-
 ```
+
+note when create a message need to add createdAt field 
+```swift 
+await sot.createMessage(message: Message(text: message, received: true, createdAt: Temporal.DateTime(Date())))
+```
+
+
 
 ## Basic UI 
 to have the bubble chat, first create a shape 
