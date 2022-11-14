@@ -8,7 +8,7 @@ date: 2022-11-13
 
 ## Introduction
 
-[Github]() shows how to build an auth flow using Amplify
+[Github](https://github.com/cdk-entest/swiftui-amplify-30days/tree/main/SwiftUI30Days/SwiftUI30Days/day6) shows how to build an auth flow using Amplify
 
 - SwiftUI and TextField
 - SignUp and Confirm
