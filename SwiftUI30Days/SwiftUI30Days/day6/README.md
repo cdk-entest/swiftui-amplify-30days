@@ -14,6 +14,9 @@ date: 2022-11-13
 - SignUp and Confirm
 - GetCurrentUser and SignIn
 
+<img width="315" alt="Screen Shot 2022-11-14 at 14 04 55" src="https://user-images.githubusercontent.com/20411077/201596124-3fc0c1c3-2a2d-4c81-9a7f-29a2608eb118.png">
+
+
 ## TextField
 
 there are many ways to create a sign in form using the swiftui textfield
