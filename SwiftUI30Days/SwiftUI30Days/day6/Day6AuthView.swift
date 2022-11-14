@@ -17,6 +17,9 @@ struct Day6LoginView: View {
     
     var body: some View {
         VStack(spacing: 20) {
+            
+            Spacer()
+            
             HStack {
                 Image(systemName: "person")
                 TextField("username", text: $username)
@@ -47,6 +50,20 @@ struct Day6LoginView: View {
             .foregroundColor(Color.white)
             .fontWeight(.bold)
             .padding(.horizontal)
+            
+            Spacer()
+            
+            Button("Create a New Account") {
+                self.authManager.authState = AuthState.signUp
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.purple.cornerRadius(10))
+            .foregroundColor(Color.white)
+            .fontWeight(.bold)
+            .padding(.horizontal)
+            
+            
         }.task{ await authManager.getCurrentAuthUser() }
     }
 }
@@ -87,20 +104,76 @@ struct Day6SessionView : View {
 struct Day6ConfirmView: View {
     
     @EnvironmentObject var authManager: AuthManager
-    
+    @State var code: String = ""
+    @State var username: String = ""
     
     var body: some View {
-        Text("Confirm View")
+        VStack {
+            TextField("username", text: $username)
+                .textContentType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .padding()
+                .background(Color.gray.opacity(0.3).cornerRadius(10))
+                .padding()
+            TextField("confirm code", text: $code)
+                .textContentType(.oneTimeCode)
+                .padding()
+                .background(Color.gray.opacity(0.3).cornerRadius(10))
+                .padding()
+            Button("Confirm") {
+                Task {
+                    await self.authManager.confirmSignUp(for:username, with: code)
+                }
+            }
+            .foregroundColor(Color.white)
+            .fontWeight(.bold)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.purple.cornerRadius(10))
+            .padding()
+        }
     }
 }
 
 struct Day6SignUpView: View {
     
     @EnvironmentObject var authManager: AuthManager
-    
+    @State private var username: String = ""
+    @State private var password: String = ""
     
     var body: some View {
-        Text("Sign Up View")
+        VStack(spacing: 20) {
+            HStack {
+                Image(systemName: "person")
+                TextField("username", text: $username)
+                    .textInputAutocapitalization(.never)
+                    .textContentType(.emailAddress)
+            }
+            .padding()
+            .background(Color.gray.opacity(0.3).cornerRadius(10))
+            .padding(.horizontal)
+            HStack {
+                Image(systemName: "lock")
+                SecureField("password", text: $password)
+                    .textInputAutocapitalization(.never)
+                    .textContentType(.password)
+            }
+            .padding()
+            .background(Color.gray.opacity(0.3).cornerRadius(10))
+            .padding(.horizontal)
+            
+            Button("Sign Up") {
+                Task {
+                    await self.authManager.signUp(username: username, password: password, email: username)
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.purple.cornerRadius(10))
+            .foregroundColor(Color.white)
+            .fontWeight(.bold)
+            .padding(.horizontal)
+        }.task{ await authManager.getCurrentAuthUser() }
     }
 }
 
@@ -153,9 +226,56 @@ class AuthManager : ObservableObject {
         }
     }
     
+    func signUp(username: String, password: String, email: String) async {
+        let userAttributes = [AuthUserAttribute(.email, value: email)]
+        let options = AuthSignUpRequest.Options(userAttributes: userAttributes)
+        do {
+            let signUpResult = try await Amplify.Auth.signUp(
+                username: username,
+                password: password,
+                options: options
+            )
+            if case let .confirmUser(deliveryDetails, _, userId) = signUpResult.nextStep {
+                print("Delivery details \(String(describing: deliveryDetails)) for userId: \(String(describing: userId))")
+                Task {@MainActor in
+                    self.authState = .confirmCode(username: username)
+                }
+            } else {
+                print("SignUp Complete")
+            }
+        } catch let error as AuthError {
+            print("An error occurred while registering a user \(error)")
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+    }
+    
+    
+    func confirmSignUp(for username: String, with confirmationCode: String) async {
+        do {
+            let confirmSignUpResult = try await Amplify.Auth.confirmSignUp(
+                for: username,
+                confirmationCode: confirmationCode
+            )
+            print("Confirm sign up result completed: \(confirmSignUpResult.isSignUpComplete)")
+            
+            Task {@MainActor in
+                self.authState = .login
+            }
+            
+        } catch let error as AuthError {
+            print("An error occurred while confirming sign up \(error)")
+        } catch {
+            print("Unexpected error: \(error)")
+        }
+    }
+    
+    
     func signout() async {
         let result = await Amplify.Auth.signOut()
-        self.authState = .login
+        Task {@MainActor in
+            self.authState = .login
+        }
     }
     
 }
