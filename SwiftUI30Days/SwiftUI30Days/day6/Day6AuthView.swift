@@ -46,7 +46,7 @@ struct Day6LoginView: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.green.cornerRadius(10))
+            .background(Color.purple.cornerRadius(10))
             .foregroundColor(Color.white)
             .fontWeight(.bold)
             .padding(.horizontal)
@@ -58,7 +58,7 @@ struct Day6LoginView: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.purple.cornerRadius(10))
+            .background(Color.orange.cornerRadius(10))
             .foregroundColor(Color.white)
             .fontWeight(.bold)
             .padding(.horizontal)
@@ -94,7 +94,7 @@ struct Day6SessionView : View {
             }
             .padding(.vertical)
             .frame(maxWidth: .infinity)
-            .background(Color.green.cornerRadius(10))
+            .background(Color.orange.cornerRadius(10))
             .foregroundColor(Color.white)
             .padding()
         }
