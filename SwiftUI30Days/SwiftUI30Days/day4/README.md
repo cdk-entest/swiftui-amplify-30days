@@ -8,6 +8,8 @@ date: 2022-11-13
 
 ## Introduction
 
+[Github](https://github.com/cdk-entest/swiftui-amplify-30days/blob/main/SwiftUI30Days/SwiftUI30Days/day4/README.md) this is day 4 and shows
+
 - Shape and path
 - Bubble chat
 - ZStack
