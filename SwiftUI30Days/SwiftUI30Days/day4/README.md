@@ -14,6 +14,8 @@ date: 2022-11-13
 - Bubble chat
 - ZStack
 
+<img width="300" alt="Screen Shot 2022-11-15 at 15 49 21" src="https://user-images.githubusercontent.com/20411077/201876344-eff75198-c960-4704-8d62-0219c7474a1f.png">
+
 ## Shape and Path
 
 create a shape and implement the path method, this will create a bubble chat shape
