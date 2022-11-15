@@ -12,6 +12,10 @@ date: 11/11/2022
 - Json decodable
 - AsyncImage
 
+
+<img width="315" alt="Screen Shot 2022-11-15 at 10 40 23" src="https://user-images.githubusercontent.com/20411077/201821101-9e87df0c-4ae4-45ac-ac5d-277ab50a82af.png">
+
+
 ## Json Decodable
 
 Define the data models
