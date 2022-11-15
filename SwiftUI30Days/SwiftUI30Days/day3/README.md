@@ -118,3 +118,18 @@ struct OpenSearchView: View {
     }
 }
 ```
+
+and the main app
+
+```swift
+@main
+struct SwiftUI30DayApp: App {
+
+    var body: some Scene {
+        WindowGroup{
+            OpenSearchView()
+        }
+    }
+}
+
+```
