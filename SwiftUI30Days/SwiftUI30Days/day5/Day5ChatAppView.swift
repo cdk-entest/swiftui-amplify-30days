@@ -65,7 +65,6 @@ class Day5SourceOfTruth : ObservableObject {
                 print("subscription error \(error)")
             }
         }
-        
     }
     
     func listMessagesByMyQuery() async {

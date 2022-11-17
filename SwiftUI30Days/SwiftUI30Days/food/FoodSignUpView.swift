@@ -26,7 +26,7 @@ struct FoodSignUpView: View {
             return !username.isEmpty && !password.isEmpty
         }
     }
-   
+    
     @FocusState private var focusedElement: FocusElement?
     @State private var username = ""
     @State private var password = ""
@@ -56,7 +56,6 @@ struct FoodSignUpView: View {
                         .labelsHidden()
                 }
                 
-                
             } header: {
                 Text("Create an account")
             } footer: {
@@ -65,7 +64,6 @@ struct FoodSignUpView: View {
                     The passkey will be available on all of your devices.
                     """, systemImage: "person.badge.key.fill")
             }
-            
         }
         .formStyle(.grouped)
         .animation(.default, value: usePassKey)
